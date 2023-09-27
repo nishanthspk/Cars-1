@@ -6,7 +6,7 @@ const app = express();
 
 // Allow requests from the specified frontend origin
 app.use(cors());
-const dbURI = "mongodb+srv://Deepakraja:Barryallen03@cluster0.3atagu3.mongodb.net/Cars";
+const dbURI = "Your mongodb atlas connection url/database_name";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
