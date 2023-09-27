@@ -22,12 +22,13 @@ mongoose
 // Parse incoming JSON data
 app.use(express.json());
 
-require("../backend/models/card")
-const User = mongoose.model("CarInfo");
+require("../backend/models/car")
+const CarDetail = mongoose.model("CarInfo");
 app.post("/post", async(req,res) => {
-    const {companyname,modelname,year,amount} = req.body;
+    const {userid,companyname,modelname,year,amount} = req.body;
     try {
-        await User.create({
+        await CarDetail.create({
+            userid,
             companyname,
             modelname,
             year,
@@ -42,13 +43,35 @@ app.post("/post", async(req,res) => {
 // Define a route to fetch car information
 app.get("/fetchCars", async (req, res) => {
   try {
-    const carInfo = await User.find(); // Assuming User is your Mongoose model
+    const carInfo = await CarDetail.find(); // Assuming User is your Mongoose model
     res.json(carInfo); // Send the car information as JSON response
   } catch (error) {
     console.error("Error fetching car info:", error);
     res.status(500).json({ error: "Internal Server Error" }); // Handle errors gracefully
   }
 });
+
+
+app.get('/userCars/:userid', async (req, res) => {
+  const userId = req.params.userid;
+  try {
+    if (!userId) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    if(!mongoose.Types.ObjectId){
+      return res.send({error: "Not a object"})
+    }
+    const userPosts = await CarDetail.find({ userid: userId });
+    res.json(userPosts);  
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+const authRoutes = require("./routes/auth");
+app.use('/auth', authRoutes);
+
 
 app.listen(3000, () => {
   console.log("Server started on port 3000");
