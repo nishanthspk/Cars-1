@@ -7,9 +7,12 @@ function Sell() {
   const [year, setYear] = useState('');
   const [amount, setAmount] = useState('');
   const [userdata,setUserData] = useState("");
+  const isLoggedIn = window.localStorage.getItem('loggedIn');
+  const port = process.env.PORT || 3000;
+  const baseUrl = `http://localhost:${port}`;
   
   useEffect(() => {
-        fetch('http://localhost:3000/auth/userDetail', {
+        fetch(`${baseUrl}/auth/userDetail`, {
         method: 'POST',
         crossDomain: true,
         headers: {
@@ -45,7 +48,7 @@ function Sell() {
       setYear('');
       setAmount('');
     }
-    fetch('http://localhost:3000/post', {
+    fetch('`${baseUrl}/post', {
       method: 'POST',
       crossDomain: true,
       headers: {
@@ -72,32 +75,41 @@ function Sell() {
 
   return (
     <div>
-       <div className="bg-white bg-cover py-3">
-            <div className=" flex justify-between">
-                <div className=" ml-5 text-2xl font-bold">
-                    CrazyCars
-                </div>
-                <ul className=" font-semibold flex py-1.5 gap-5 mr-5">
-                    <li className=" hover:bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 hover:rounded-xl cursor-pointer px-1"><Link to={'/dashboard'}>Dashboard</Link></li>
-                    <li className=" hover:bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 hover:rounded-xl cursor-pointer px-1"><Link to={'/viewcars'}>View Cars</Link></li>
-                    <li className=" hover:bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 hover:rounded-xl px-1 cursor-pointer"><Link to={'/mypost'}>My Post</Link></li>
-                    <li className=" hover:bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 hover:rounded-lg px-1 cursor-pointer underline"><Link to={'/sell'}>Sell</Link></li>
-                    <li className=" hover:bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 hover:rounded-xl px-1 cursor-pointer font-normal"><Link to={'/dashboard'}>{userdata.firstname}</Link></li>
-                    <Logout/>
-                </ul>
-            </div>
-        </div>
-      <div className='bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-cover pb-6'>
+       <nav className=' bg-white h-12 w-full fixed'>
+          <input type='checkbox' id='check' hidden />
+          <label for="check" className=" float-right text-3xl lg:hidden mt-3 mr-4">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </label>
+          <label className=' ml-6 leading-[44px] text-2xl font-bold'>CrazyCars</label>
+          <ul className=' float-right lg:flex mr-10 leading-[44px] space-x-4 uppercase rounded fixed lg:relative h-[100vh] lg:h-0 w-full lg:w-fit
+           pt-20 lg:pt-0 transition-all duration-300 lg:transition-none text-center bg-white -left-full lg:left-0'> 
+            <li className=' text-center ml-3'><Link to={'/dashboard'}>Dashboard</Link></li>
+            <li className=' text-center'><Link to={'/viewcars'}>View Cars</Link></li>
+            <li className=' text-center'><Link to={'/mypost'}>My Post</Link></li>
+            <li className=' text-center'><Link to={'/sell'}>Sell</Link></li>
+            <li className='text-center'>
+              {isLoggedIn === 'true' ? (
+                <Link to={'/dashboard'}>{userdata.firstname}</Link>
+              ) : (
+                <Link to={'/dashboard'}>Profile</Link>
+              )}
+            </li>
+            <Logout />
+          </ul>
+        </nav>
+      <div className='bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-cover min-h-screen pt-24 pb-6'>
+        <div className='flex flex-col justify-center items-center'>
+        <div className=' bg-white bg-center bg-auto px-6 py-6 rounded-3xl'>
         <h1 className='text-6xl text-center pt-10 text-gray-800 underline'>Post Cars</h1>
-        
-        <center>
           <input
             type='text'
             placeholder='Company Name'
             id='name'
             value={companyname}
             onChange={(e) => setCompnayName(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -107,7 +119,7 @@ function Sell() {
             id='desc'
             value={modelname}
             onChange={(e) => setModelName(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -117,7 +129,7 @@ function Sell() {
             id='year'
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -127,12 +139,11 @@ function Sell() {
             id='amount'
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
+          <div className='flex items-center justify-center'>
           <br />
-        </center>
-        <center>
           <input
             type='button'
             value='Post'
@@ -141,7 +152,9 @@ function Sell() {
           />
           <br />
           <br />
-        </center>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   );

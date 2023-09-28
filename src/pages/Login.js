@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { authreducer } from "./Token/tokenSlice";
+
 
 function Login() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const dispatch = useDispatch();
+    const port = process.env.PORT || 3000;
+    const baseUrl = `http://localhost:${port}`;
 
     function loginHandler(){
         const _email = document.getElementById('email').value;
@@ -22,7 +22,7 @@ function Login() {
             setEmail("");
             setPassword("");
         }
-        fetch('http://localhost:3000/auth/login', {
+        fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         crossDomain: true,
         headers: {
@@ -39,7 +39,6 @@ function Login() {
         .then((data) => {
           console.log(data, 'userLogin');
           if(data.status === 'ok'){
-            dispatch(authreducer(data.data));
             window.localStorage.setItem('token', data.data);
             window.localStorage.setItem('loggedIn', true);
             window.location.href='./dashboard';
@@ -62,41 +61,43 @@ function Login() {
                 </ul>
             </div>
         </div>
-      <div className='bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-cover pb-6'>
-      <h1 className='text-6xl text-center pt-10 text-gray-800 underline'>Login</h1>
-      <center>
-        <input
-          type='email'
-          placeholder='E-mail ID'
-          id='email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
-          required
-        />
-        <br />
-        <input
-          type='password'
-          placeholder='Enter your Password'
-          id='pass'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
-          required
-        />
-        <br />
-      </center>
-      <center>
-        <input
-          type='button'
-          value='Login'
-          onClick={loginHandler}
-          className='text-white mt-6 bg-red-600 w-28 h-8 rounded-2xl border-black hover:bg-fuchsia-600 cursor-pointer align-middle text-center'
-        />
-        <br />
-        <br />
-      </center>
-    </div>
+        <div className='bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 min-h-screen pt-24 pb-8'>
+        <div className=" flex flex-col justify-center items-center">
+          <div className=" bg-white bg-center bg-auto px-6 py-6 rounded-3xl">
+          <h1 className='text-3xl text-center underline text-gray-800'>Sign Up</h1>
+          <input
+            type='email'
+            placeholder='E-mail ID'
+            id='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
+            required
+          />
+          <br />
+          <input
+            type='password'
+            placeholder='Enter your Password'
+            id='pass'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
+            required
+          />
+          <br />
+          <div className=" flex items-center justify-center">
+          <input
+            type='button'
+            value='Login'
+            onClick={loginHandler}
+            className='text-white mt-6 bg-red-600 w-28 h-8 rounded-2xl border-black hover:bg-fuchsia-600 cursor-pointer align-middle text-center'
+          />
+          <br />
+          <br />
+          </div>
+          </div>
+        </div>
+      </div>
     </div>
      );
 }

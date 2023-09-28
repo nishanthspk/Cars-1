@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require('dotenv').config();
 
 const app = express();
 
 // Allow requests from the specified frontend origin
 app.use(cors());
-const dbURI = "Your mongodb atlas connection url/database_name";
+const dbURI = "mongodb+srv://Deepakraja:Barryallen03@cluster0.3atagu3.mongodb.net/Cars";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -73,6 +74,7 @@ const authRoutes = require("./routes/auth");
 app.use('/auth', authRoutes);
 
 
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });

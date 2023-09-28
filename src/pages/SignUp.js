@@ -8,6 +8,8 @@ function SignUp() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [confirmpassword,setConfirmPassword] = useState('');
+    const port = process.env.PORT || 3000;
+    const baseUrl = `http://localhost:${port}`;
 
     function Register(){
         const _firstname = document.getElementById('fname').value;
@@ -38,7 +40,7 @@ function SignUp() {
             setPassword("");
             setConfirmPassword("");
         }
-        fetch('http://localhost:3000/auth/signup', {
+        fetch(`${baseUrl}/auth/signup`, {
         method: 'POST',
         crossDomain: true,
         headers: {
@@ -73,17 +75,17 @@ function SignUp() {
           </ul>
         </div>
       </div>
-      <div className='bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-cover' style={{background:'flex' }}>
-        <h1 className='text-6xl text-center pt-10 text-gray-800 underline'>CarBuyer</h1>
-        <h1 className='text-3xl text-center mt-5 text-gray-800'>Sign Up</h1>
-        <center>
+      <div className='bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 min-h-screen pt-24 pb-8'>
+        <div className=" flex flex-col justify-center items-center">
+          <div className=" bg-white bg-center bg-auto px-6 py-6 rounded-3xl">
+          <h1 className='text-3xl text-center underline text-gray-800'>Sign Up</h1>
           <input
             type='text'
             placeholder='First Name'
             id='fname'
             value={firstname}
             onChange={(e) => setFirstName(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -93,7 +95,7 @@ function SignUp() {
             id='lname'
             value={lastname}
             onChange={(e) => setLastName(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -103,7 +105,7 @@ function SignUp() {
             id='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -113,7 +115,7 @@ function SignUp() {
             id='pass'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
@@ -123,12 +125,11 @@ function SignUp() {
             id='con-pass'
             value={confirmpassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className='text-center w-96 h-9 mt-10 rounded-2xl flex justify-center'
+            className='text-center w-60 text-base h-9 mt-10 rounded-2xl flex justify-center border-2 border-black'
             required
           />
           <br />
-        </center>
-        <center>
+          <div className=" flex items-center justify-center">
           <input
             type='button'
             value='Register'
@@ -137,7 +138,9 @@ function SignUp() {
           />
           <br />
           <br />
-        </center>
+          </div>
+          </div>
+        </div>
       </div>
     </div>
      );
